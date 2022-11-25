@@ -1,77 +1,50 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
-using LogAndReadBackEnd.Data;
-using LogAndReadBackEnd.DTOs;
-using LogAndReadBackEnd.Entities;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using LogAndReadBackEnd.Services;
 
 namespace LogAndReadBackEnd.Controllers
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using DTOs;
+    using Entities;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+
     public class UserController : BaseController
     {
-        private readonly DataContext _context;
+        private readonly IUserService _userService;
 
-        public UserController(DataContext context)
+        public UserController(IUserService userService)
         {
-            _context = context;
+            this._userService = userService;
         }
 
         [HttpGet("/user")]
         [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<WebUser>>> GetUsers()
         {
-            return await _context.Users.ToListAsync();
+            return this.Ok(this._userService.GetAllUsers());
         }
 
-        [Authorize]
+        [AllowAnonymous]
         [HttpGet("/user/{id}")]
         public async Task<ActionResult<WebUser>> GetUser(int id)
         {
-            return await _context.Users.FindAsync(id);
+            var user = this._userService.GetWebUser(user => user.Id == id);
+            return user != null ? user : this.BadRequest("Error");
         }
 
         [HttpPut("/user/{id}/update")]
-        public async Task<ActionResult<WebUser>> UpdateUser(int id, [FromBody]UserDto user)
+        public async Task<ActionResult<WebUser>> UpdateUser([FromBody]UserDto user)
         {
-            WebUser userToUpdate = await _context.Users.SingleOrDefaultAsync(webUser => webUser.Id == id);
-            if (userToUpdate.Username != user.Username)
-            {
-                if (await UserExists(user.Username))
-                {
-                    return Unauthorized("User already exists by the username");
-                }
-                userToUpdate.Username = user.Username;
-            }
-            if (userToUpdate.Password != null)
-            {
-                using var hmac = new HMACSHA512();
-                userToUpdate.Password = hmac.ComputeHash(Encoding.UTF8.GetBytes(user.Password));
-                userToUpdate.PasswordSalt = hmac.Key;
-            }
-            await _context.SaveChangesAsync();
-
-            return userToUpdate;
+            var updatedUser = this._userService.UpdateWebUser(user);
+            return updatedUser;
         }
 
         [HttpDelete("/user/{id}/delete")]
-        public async Task<ActionResult<String>> DeleteUser(int id)
+        public async Task<ActionResult<string>> DeleteUser(int id)
         {
-            WebUser userToDelete = await _context.Users.SingleOrDefaultAsync(user => user.Id == id);
-            _context.Users.Remove(userToDelete);
-            await _context.SaveChangesAsync();
-            return Ok("User Deleted");
-        }
-
-        private Task<bool> UserExists(string username)
-        {
-            return _context.Users.AnyAsync(user => user.Username == username);
+            this._userService.DeleteWebUser(id);
+            return this.Ok("User Deleted");
         }
     }
 }

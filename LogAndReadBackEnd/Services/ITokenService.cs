@@ -1,7 +1,7 @@
-﻿using LogAndReadBackEnd.Entities;
-
-namespace LogAndReadBackEnd.Services
+﻿namespace LogAndReadBackEnd.Services
 {
+    using Entities;
+
     public interface ITokenService
     {
         public string CreateToken(WebUser user);

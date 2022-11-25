@@ -1,33 +1,31 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LogAndReadBackEnd.Data;
-using LogAndReadBackEnd.Entities;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
 namespace LogAndReadBackEnd.Controllers
 {
+    using Entities;
+    using Persistence;
+    using Microsoft.AspNetCore.Mvc;
+
     public class BookController : BaseController
     {
-        private readonly DataContext _context;
+        private readonly IRepository<Book> _bookRepository;
 
-        public BookController(DataContext context)
+        public BookController(IRepository<Book> bookRepository)
         {
-            _context = context;
+            this._bookRepository = bookRepository;
         }
 
         [HttpGet("/book/{id}")]
         public async Task<ActionResult<Book>> GetBookById(int id)
         {
-            return await _context.Books.SingleOrDefaultAsync(book => book.Id == id);
+            return this._bookRepository.Get(book => book.Id == id);
         }
 
         [HttpGet("/books")]
         public async Task<ActionResult<List<Book>>> GetBooks()
         {
-            return await _context.Books.ToListAsync();
+            return this._bookRepository.GetAll().ToList();
         }
     }
 }

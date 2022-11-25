@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace LogAndReadBackEnd.Controllers
+﻿namespace LogAndReadBackEnd.Controllers
 {
+    using Microsoft.AspNetCore.Mvc;
+
     public class BaseController : Controller
     {
         [ApiController]
