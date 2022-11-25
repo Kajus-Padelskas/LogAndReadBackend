@@ -1,6 +1,4 @@
-﻿using LogAndReadBackEnd.DTOs;
-
-namespace LogAndReadBackEnd.Services
+﻿namespace LogAndReadBackEnd.Services
 {
     using System;
     using System.Collections.Generic;
@@ -8,6 +6,7 @@ namespace LogAndReadBackEnd.Services
     using System.Linq.Expressions;
     using System.Security.Cryptography;
     using System.Text;
+    using DTOs;
     using Entities;
     using Persistence;
 

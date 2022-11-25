@@ -1,11 +1,10 @@
-﻿using LogAndReadBackEnd.Services;
-
-namespace LogAndReadBackEnd.Controllers
+﻿namespace LogAndReadBackEnd.Controllers
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using DTOs;
     using Entities;
+    using Services;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 

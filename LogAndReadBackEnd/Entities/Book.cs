@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace LogAndReadBackEnd.Entities
+﻿namespace LogAndReadBackEnd.Entities
 {
+    using System;
+
     public class Book
     {
         public int Id { get; set; }

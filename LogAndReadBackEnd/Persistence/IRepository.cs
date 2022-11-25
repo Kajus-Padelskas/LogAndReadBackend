@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-
-namespace LogAndReadBackEnd.Persistence
+﻿namespace LogAndReadBackEnd.Persistence
 {
-    public interface IRepository<T> where T : class
+    using System;
+    using System.Collections.Generic;
+    using System.Linq.Expressions;
+
+    public interface IRepository<T>
+        where T : class
     {
         public ICollection<T> GetAll();
-        
+
         public T Get(Expression<Func<T, bool>> filter);
 
         public void Update(T entity);

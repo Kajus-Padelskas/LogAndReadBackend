@@ -1,8 +1,7 @@
-﻿
-using System.ComponentModel.DataAnnotations;
-
-namespace LogAndReadBackEnd.DTOs
+﻿namespace LogAndReadBackEnd.DTOs
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class RegisterDto
     {
         [Required]
