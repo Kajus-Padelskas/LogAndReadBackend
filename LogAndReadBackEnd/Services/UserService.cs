@@ -29,7 +29,7 @@
             this.HashUserPassword(password, out var passwordHash, out var passwordHashSalt);
             var user = new WebUser
             {
-                Username = username.ToLower(),
+                Username = username,
                 Password = passwordHash,
                 PasswordSalt = passwordHashSalt,
                 CreationTime = DateTime.Now,

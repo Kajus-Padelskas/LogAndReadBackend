@@ -16,7 +16,7 @@ var step = Step.Create("Get Users Endpoint", async context =>
 var scenario = ScenarioBuilder.CreateScenario("Get Users", step)
     .WithWarmUpDuration(TimeSpan.FromSeconds(5))
     .WithLoadSimulations(
-        Simulation.InjectPerSec(rate: 100, during: TimeSpan.FromSeconds(60))
+        Simulation.InjectPerSec(rate: 100, during: TimeSpan.FromSeconds(30))
     ); ;
 
 NBomberRunner
